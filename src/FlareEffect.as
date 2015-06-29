@@ -1,6 +1,5 @@
 package
 {
-	import flash.display.Bitmap;
 	import flash.display.Sprite;
 	import flash.text.TextFormat;
 	
@@ -15,7 +14,6 @@ package
 			
 			bitFont.draw(this.graphics, 100, 100, 100, 100, "杨张永");
 			
-//			addChild(new Bitmap(bitFont.
 		}
 	}
 }
