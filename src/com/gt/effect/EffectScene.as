@@ -53,7 +53,7 @@ package com.gt.effect
 		{
 			camera.translateZ(this._spinZ);
 			this._spinZ = this._spinZ * (1 - this.smooth);
-			
+			/*
 			if (Input3D.keyHit(Input3D.Z) && EffectPivotManager.selectObj)
 			{
 				var tar_obj:Pivot3D = EffectPivotManager.selectObj;
@@ -61,6 +61,7 @@ package com.gt.effect
 				camera.z = tar_obj.z - 20;
 				camera.lookAt(tar_obj.x, tar_obj.y, tar_obj.z);
 			}
+			*/
 		}
 		
 		private function onCheckWheel(evt:MouseEvent):void

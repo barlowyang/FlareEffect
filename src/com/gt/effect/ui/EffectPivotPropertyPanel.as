@@ -2,6 +2,8 @@ package com.gt.effect.ui
 {
 	import com.bit101.components.Label;
 	import com.bit101.components.NumericStepper;
+	import com.bit101.components.PushButton;
+	import com.gt.effect.EffectPivotManager;
 	
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
@@ -22,6 +24,8 @@ package com.gt.effect.ui
 		private var FScaleXNum:NumericStepper;
 		private var FScaleYNum:NumericStepper;
 		private var FScaleZNum:NumericStepper;
+		
+		private var _remove_frame_btn:PushButton;
 		
 		public function EffectPivotPropertyPanel(parent:DisplayObjectContainer=null)
 		{
@@ -58,7 +62,50 @@ package com.gt.effect.ui
 			new Label(this, xPos+75, yPos, "Z:");
 			FScaleZNum = CreateNumericStepper(xPos += 90, yPos, 20, 70, Num_Step, 0, UpdateProperty);
 			
-			height = 100;
+			_remove_frame_btn = new PushButton(this, xPos = 5, xPos += 75, "删除关键帧", onRemoveFrame);
+			
+			height = 130;
+		}
+		
+		private function onRemoveFrame(evt:Event):void
+		{
+			var curFrame:int = FlareEffect.inst.curFrame;
+			EffectPivotManager.removeFrame(_tar_pivot, curFrame);
+			
+			FlareEffect.inst.updateFrame();
+			
+			_remove_frame_btn.enabled = EffectPivotManager.isFrame(_tar_pivot, curFrame);
+		}
+		
+		override public function draw():void
+		{
+			super.draw();
+			
+			if (_tar_pivot)
+			{
+				var posVec:Vector3D = _tar_pivot.getPosition(false);
+				FPosXNum.value = posVec.x;
+				FPosYNum.value = posVec.y;
+				FPosZNum.value = posVec.z;
+				
+				var rotVec:Vector3D = _tar_pivot.getRotation();
+				FRotXNum.value = rotVec.x;
+				FRotYNum.value = rotVec.y;
+				FRotZNum.value = rotVec.z;
+				
+				//				var scaleVec:Vector3D = _tar_pivot.getScale(false);
+				FScaleXNum.value = _tar_pivot.scaleX;
+				FScaleYNum.value = _tar_pivot.scaleY;
+				FScaleZNum.value = _tar_pivot.scaleZ;
+				
+				var curFrame:int = FlareEffect.inst.curFrame;
+				
+				_remove_frame_btn.enabled = EffectPivotManager.isFrame(_tar_pivot, curFrame);
+			}
+			else
+			{
+				_remove_frame_btn.enabled = false;
+			}
 		}
 		
 		private function UpdateProperty(e:Event):void
@@ -120,6 +167,8 @@ package com.gt.effect.ui
 						break;
 					}
 				}
+				
+				EffectPivotManager.addFrame(_tar_pivot, FlareEffect.inst.curFrame);
 			}
 		}
 		
@@ -135,20 +184,17 @@ package com.gt.effect.ui
 		
 		private function onUpdateInfo(evt:Event):void
 		{
-			FPosXNum.value = _tar_pivot.x;
-			FPosYNum.value = _tar_pivot.y;
-			FPosZNum.value = _tar_pivot.z;
-			
-			var RotVec:Vector3D = _tar_pivot.getRotation();
-			FRotXNum.value = RotVec.x;
-			FRotYNum.value = RotVec.y;
-			FRotZNum.value = RotVec.z;
-			
-			FScaleXNum.value = _tar_pivot.scaleX;
-			FScaleXNum.value = _tar_pivot.scaleY;
-			FScaleXNum.value = _tar_pivot.scaleZ;
-			
-			invalidate();
+			updateInfo();
+		}
+		
+		override public function updateInfo():void
+		{
+			if (_tar_pivot)
+			{
+				super.updateInfo();
+				
+				invalidate();
+			}
 		}
 		
 		override public function set target(value:Pivot3D):void

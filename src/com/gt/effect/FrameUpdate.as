@@ -3,7 +3,7 @@ package com.gt.effect
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.events.Event;
-
+	
 	public class FrameUpdate
 	{
 		private static var _obj:DisplayObject;
@@ -19,7 +19,10 @@ package com.gt.effect
 		
 		public static function addFun(func:Function):void
 		{
-			_dict.push(func);
+			if (_dict.indexOf(func) == -1)
+			{
+				_dict.push(func);
+			}
 		}
 		
 		public static function removeFun(func:Function):void

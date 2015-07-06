@@ -46,6 +46,7 @@ package com.gt.effect.ui
 			_subPropertys = new Vector.<EffectSubPropertyPanel>();
 			
 			InitPanel(EffectPivotPropertyPanel);
+			InitPanel(EffectEventPropertyPanel);
 		}
 		
 		private function InitPanel(panelClass:Class, fold:Boolean = false):*
@@ -124,6 +125,14 @@ package com.gt.effect.ui
 			}
 			
 			UpdateScroll();
+		}
+		
+		public function updateInfo():void
+		{
+			for each (var pivot:EffectSubPropertyPanel in _subPropertys)
+			{
+				pivot.updateInfo();
+			}
 		}
 		
 		public function set target(val:Pivot3D):void
